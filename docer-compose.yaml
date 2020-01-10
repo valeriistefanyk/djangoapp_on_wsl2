@@ -1,0 +1,21 @@
+version: '3'
+volumes: 
+  data:
+services: 
+  web:
+    build: web
+    command: uwsgi --plugin http,python3 --http :8000 --wsgi-file main/wsgi.py
+    # command: uwsgi --http :8000 --wsgi-file main/wsgi.py
+    ports:
+      - "8000:8000"
+    environment: 
+      - DEBUG
+      - SECRET_KEY=fdsxfsdf
+  db:
+    image: postgres:alpine
+    volumes: 
+      - data:/var/lib/postgresql/data
+    environment: 
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=test
